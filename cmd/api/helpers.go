@@ -2,6 +2,8 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
+	"io"
 	"net/http"
 )
 
@@ -74,4 +76,26 @@ func (app *application) notFoundResponse(
 ) {
 	message := "the requested resource could not be found"
 	app.errorResponse(w, r, http.StatusNotFound, message)
+}
+
+func (app *application) readJSON(w http.ResponseWriter, r *http.Request, dst interface{}) error {
+
+	// Limit request body size (1MB)
+	r.Body = http.MaxBytesReader(w, r.Body, 1_048_576)
+
+	dec := json.NewDecoder(r.Body)
+	dec.DisallowUnknownFields()
+
+	err := dec.Decode(dst)
+	if err != nil {
+		return err
+	}
+
+	// Check if there is extra JSON
+	err = dec.Decode(&struct{}{})
+	if err != io.EOF {
+		return errors.New("body must only contain a single JSON object")
+	}
+
+	return nil
 }

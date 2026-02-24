@@ -1,0 +1,21 @@
+{
+  "name": "CreateMovie",
+  "rank": "acreat17719187345651",
+  "request": {
+    "type": "http",
+    "url": "http://localhost:4000/v1/movies",
+    "scripts": {
+      "preRequest": "",
+      "postResponse": ""
+    },
+    "method": "POST",
+    "queryParams": [],
+    "headers": [],
+    "body": "{\"title\":\"Inception\",\"year\":2010,\"runtime\":148,\"genres\":[\"sci-fi\",\"thriller\"]}",
+    "contentType": "application/json",
+    "auth": {
+      "currentAuthType": "INHERIT",
+      "authConfigStore": {}
+    }
+  }
+}
